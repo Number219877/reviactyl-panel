@@ -1,8 +1,9 @@
 FROM ghcr.io/reviactyl/panel:latest
 
 USER root
-# Install/Update certificates and force PHP to see them
-RUN apt-get update && apt-get install -y ca-certificates && update-ca-certificates
+
+# Alpine-compatible command to update certificates
+RUN apk update && apk add --no-cache ca-certificates && update-ca-certificates
 
 # Force the environment to recognize the certs
 ENV SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
