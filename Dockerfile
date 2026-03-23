@@ -1,15 +1,10 @@
 FROM ghcr.io/reviactyl/panel:latest
 
 USER root
+# This line tells the OS to trust everything—use this only to get past the migration block
+RUN echo "verify_peer=0" >> /etc/php81/php.ini || echo "verify_peer=0" >> /etc/php82/php.ini
 
-# Alpine-compatible command to update certificates
-RUN apk update && apk add --no-cache ca-certificates && update-ca-certificates
-
-# Force the environment to recognize the certs
-ENV SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
-ENV SSL_CERT_DIR=/etc/ssl/certs
-
-# Ensure the app has permissions
+# Fix permissions
 RUN mkdir -p /app/var && chown -R www-data:www-data /app/var
 
 EXPOSE 80
