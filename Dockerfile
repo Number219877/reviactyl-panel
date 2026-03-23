@@ -1,8 +1,11 @@
 FROM ghcr.io/reviactyl/panel:latest
 
-# Create the missing directory and set permissions
 USER root
+# Ensure the panel can write its own config
 RUN mkdir -p /app/var && chown -R www-data:www-data /app/var
 
-# Switch back to the default user if the image uses one (usually www-data or root)
+# This forces PHP to find the CA bundle in the container
+ENV SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
+ENV SSL_CERT_DIR=/etc/ssl/certs
+
 EXPOSE 80
